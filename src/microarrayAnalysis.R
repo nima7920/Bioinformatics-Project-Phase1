@@ -17,7 +17,7 @@ matrix <- exprs(gset)
 
 # removing useless samples
 patients<-matrix[,1:13]
-normal_indices=c(41,45,69,71,75,77:80,82,85,86,92,94,96,98,100,104,108,138:144,147,151:170)
+normal_indices=c(41,45,69,71,75,77:80,82,85,86,89,90,92,94,96,98,100,104,108,138:144,147,151:170)
 normals <-matrix[,normal_indices]
 matrix<-cbind(patients,normals)
 labels <-c(rep("AML",13),rep("Normal",47))
@@ -76,4 +76,7 @@ pdf("results/samples_tsne.pdf")
 ggplot(tsne,aes(tsne[,1],tsne[,2],color=Group))+ geom_point(size=2) + theme_bw()
 #plot(tsne$Y)
 dev.off()
+
+#### seperating the source name of normals
+labels2<-c(rep("AML",13),"Gran","Gran","BC","TC","Gran","Gran","Mono","Mono","BC",rep("TC",5),"BC","TC","BC","TC",rep("CD34",3),rep("Gran",7),"TC",rep("BC",7),"TC",rep("Mono",4),"Gran",rep("TC",7))
 
