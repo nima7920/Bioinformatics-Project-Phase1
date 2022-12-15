@@ -54,7 +54,6 @@ plot(x_transformed[,1:2])
 dev.off()
 
 # PCA for samples
-# labels should be added , 1:15
 pcr <-data.frame(pcs$rotation[,1:3],Group=labels)
 pdf("results/samples pca.pdf")
 ggplot(pcr,aes(PC1,PC2,color=Group)) + geom_point(size=2) + theme_bw()
@@ -79,4 +78,36 @@ dev.off()
 
 #### seperating the source name of normals
 labels2<-c(rep("AML",13),"Gran","Gran","BC","TC","Gran","Gran","Mono","Mono","BC",rep("TC",5),"BC","TC","BC","TC",rep("CD34",3),rep("Gran",7),"TC",rep("BC",7),"TC",rep("Mono",4),"Gran",rep("TC",7))
+
+# heatmap for new groups
+pdf("results/Correlation between groups heatmap.pdf",width=10,height=10)
+pheatmap(cor(matrix),labels_row = labels2,labels_col = labels2)
+dev.off()
+
+######### Using previous dimensionality reduction methods to visualize the difference between groups
+
+# PCA for samples
+pcr <-data.frame(pcs$rotation[,1:3],Group=labels2)
+pdf("results/samples pca for grouped data.pdf")
+ggplot(pcr,aes(PC1,PC2,color=Group)) + geom_point(size=2) + theme_bw()
+dev.off()
+
+#### MDS for samples
+mds <-cmdscale(distance_matrix,k=2)
+mds <-data.frame(mds[,1:2],Group=labels2)
+pdf("results/samples_MDS for grouped data.pdf")
+ggplot(mds,aes(mds[,1],mds[,2],color=Group))+ geom_point(size=2) + theme_bw()
+dev.off()
+
+#### t-SNE for samples
+tsne<-Rtsne(t(matrix),perplexity = 15)
+tsne<-data.frame(tsne$Y,Group=labels2)
+pdf("results/samples_tsne for grouped data.pdf")
+ggplot(tsne,aes(tsne[,1],tsne[,2],color=Group))+ geom_point(size=2) + theme_bw()
+#plot(tsne$Y)
+dev.off()
+
+
+
+
 
